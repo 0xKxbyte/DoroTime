@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DoroTime — Foco e produtividade</title>
+    <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- ============ TOP BAR ============ -->
+      <header class="top-row">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M12 8v4l3 2" />
+            </svg>
+          </div>
+          <span class="brand-name">DoroTime</span>
+        </div>
+        <button
+          type="button"
+          class="icon-btn"
+          id="btn-open-settings"
+          aria-label="Abrir configurações">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z" />
+          </svg>
+        </button>
+      </header>
+
+      <!-- ============ ONBOARDING ============ -->
+      <main class="onboarding" id="screen-onboarding" hidden>
+        <div>
+          <div class="brand-mark" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="12" cy="12" r="8" />
+              <path d="M12 8v4l3 2" />
+            </svg>
+          </div>
+          <h1 class="t-title" style="margin-top: var(--space-5)">
+            Como podemos te chamar?
+          </h1>
+          <p class="t-body t-secondary" style="margin-top: 8px">
+            Seu nome fica salvo apenas neste navegador.
+          </p>
+        </div>
+        <form id="form-onboarding">
+          <div class="field">
+            <label for="input-name">Nome</label>
+            <input
+              class="input"
+              id="input-name"
+              name="name"
+              type="text"
+              placeholder="Ex.: João"
+              autocomplete="given-name"
+              required
+              maxlength="30" />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Continuar
+          </button>
+        </form>
+      </main>
+
+      <!-- ============ HOME ============ -->
+      <main id="screen-home" hidden>
+        <section class="greeting">
+          <p class="hello">Olá</p>
+          <h1 class="t-title" id="text-greeting-name">Olá</h1>
+        </section>
+
+        <section class="card session-card">
+          <span class="phase-badge" id="phase-badge">Pronto para focar</span>
+
+          <div class="timer-ring">
+            <svg viewBox="0 0 100 100" aria-hidden="true">
+              <circle class="ring-track" cx="50" cy="50" r="42"></circle>
+              <circle
+                class="ring-progress"
+                id="ring-progress"
+                cx="50"
+                cy="50"
+                r="42"
+                stroke-dasharray="263.9"
+                stroke-dashoffset="0"></circle>
+            </svg>
+            <div class="timer-center">
+              <span
+                class="timer-number t-mono"
+                id="timer-display"
+                role="timer"
+                aria-live="polite"
+                >25:00</span
+              >
+              <span class="timer-sub" id="timer-sub">Foco</span>
+            </div>
+          </div>
+
+          <!-- Botões dependentes de estado -->
+          <div class="btn-row" id="controls-idle">
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              id="btn-start">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                style="width: 15px; height: 15px">
+                <polygon points="6 3 20 12 6 21 6 3" />
+              </svg>
+              Iniciar
+            </button>
+          </div>
+
+          <div class="btn-row" id="controls-running" hidden>
+            <button type="button" class="btn btn-secondary" id="btn-pause">
+              Pausar
+            </button>
+            <button
+              type="button"
+              class="btn btn-destructive"
+              id="btn-stop-running">
+              Encerrar
+            </button>
+          </div>
+
+          <div class="btn-row" id="controls-paused" hidden>
+            <button type="button" class="btn btn-primary" id="btn-resume">
+              Continuar
+            </button>
+            <button type="button" class="btn btn-secondary" id="btn-restart">
+              Reiniciar
+            </button>
+            <button
+              type="button"
+              class="btn btn-destructive"
+              id="btn-stop-paused">
+              Encerrar
+            </button>
+          </div>
+
+          <div class="btn-row" id="controls-completed" hidden>
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              id="btn-new-session">
+              Nova sessão
+            </button>
+          </div>
+
+          <p class="session-meta" id="session-meta">
+            25 min foco • 5 min descanso
+          </p>
+        </section>
+
+        <!-- Seletor de duração (somente quando idle) -->
+        <section id="duration-section">
+          <h2 class="section-title">Duração do foco</h2>
+          <div class="duration-picker">
+            <div
+              class="chip-group"
+              id="chips-focus"
+              role="group"
+              aria-label="Duração do foco">
+              <button
+                type="button"
+                class="chip"
+                data-minutes="25"
+                aria-pressed="true">
+                25 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="30"
+                aria-pressed="false">
+                30 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="50"
+                aria-pressed="false">
+                50 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="60"
+                aria-pressed="false">
+                60 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="custom"
+                aria-pressed="false">
+                Personalizado
+              </button>
+            </div>
+            <div class="custom-duration" id="custom-focus-wrap" hidden>
+              <input
+                class="input"
+                type="number"
+                id="input-custom-focus"
+                min="1"
+                max="180"
+                placeholder="Min." />
+              <span class="t-body-sm t-secondary">minutos de foco</span>
+            </div>
+          </div>
+
+          <h2 class="section-title">Duração do descanso</h2>
+          <div class="duration-picker">
+            <div
+              class="chip-group"
+              id="chips-rest"
+              role="group"
+              aria-label="Duração do descanso">
+              <button
+                type="button"
+                class="chip"
+                data-minutes="5"
+                aria-pressed="true">
+                5 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="10"
+                aria-pressed="false">
+                10 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="15"
+                aria-pressed="false">
+                15 min
+              </button>
+              <button
+                type="button"
+                class="chip"
+                data-minutes="custom"
+                aria-pressed="false">
+                Personalizado
+              </button>
+            </div>
+            <div class="custom-duration" id="custom-rest-wrap" hidden>
+              <input
+                class="input"
+                type="number"
+                id="input-custom-rest"
+                min="1"
+                max="60"
+                placeholder="Min." />
+              <span class="t-body-sm t-secondary">minutos de descanso</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Estatísticas simples -->
+        <section>
+          <h2 class="section-title">Hoje</h2>
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="val" id="stat-sessions">0</div>
+              <div class="lbl">Sessões</div>
+            </div>
+            <div class="stat-card">
+              <div class="val" id="stat-minutes">0 min</div>
+              <div class="lbl">Tempo focado</div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="app-footer">
+          <p class="t-caption">
+            DoroTime Mini V1 · dados salvos apenas neste navegador
+          </p>
+        </footer>
+      </main>
+
+      <!-- ============ SETTINGS MODAL ============ -->
+      <div class="modal-scrim" id="modal-settings" hidden>
+        <div
+          class="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="settings-title">
+          <div class="modal-head">
+            <h2 class="t-headline" id="settings-title">Configurações</h2>
+            <button
+              type="button"
+              class="icon-btn"
+              id="btn-close-settings"
+              aria-label="Fechar configurações">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <form id="form-settings">
+            <div class="field">
+              <label for="input-settings-name">Nome</label>
+              <input
+                class="input"
+                id="input-settings-name"
+                type="text"
+                maxlength="30" />
+            </div>
+
+            <div class="settings-row">
+              <label class="row-label" for="input-settings-sound"
+                >Som do alarme</label
+              >
+              <div class="row-input">
+                <label class="switch">
+                  <input type="checkbox" id="input-settings-sound" checked />
+                  <span class="track"></span><span class="knob"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <label class="row-label" for="input-settings-volume"
+                >Volume</label
+              >
+              <div class="row-input" style="width: 55%">
+                <input
+                  class="range"
+                  type="range"
+                  id="input-settings-volume"
+                  min="0"
+                  max="100"
+                  value="70"
+                  aria-label="Volume do alarme" />
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <span class="row-label">Tema</span>
+              <div
+                class="segmented"
+                id="settings-theme-group"
+                role="group"
+                aria-label="Tema">
+                <button
+                  type="button"
+                  data-theme-choice="light"
+                  aria-pressed="true">
+                  Light
+                </button>
+                <button
+                  type="button"
+                  data-theme-choice="dark"
+                  aria-pressed="false">
+                  Dark
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-row">
+              <span class="row-label">Tempo padrão de foco</span>
+              <span
+                class="row-input t-body-sm t-secondary"
+                id="settings-default-focus"
+                >25 min</span
+              >
+            </div>
+            <div class="settings-row">
+              <span class="row-label">Tempo padrão de descanso</span>
+              <span
+                class="row-input t-body-sm t-secondary"
+                id="settings-default-rest"
+                >5 min</span
+              >
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              style="margin-top: var(--space-6)">
+              Salvar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elemento de áudio: aponte para um arquivo próprio em assets/audio/alarm.mp3 quando quiser trocar o som. -->
+    <audio id="audio-alarm" src="assets/audio/alarm.mp3" preload="auto"></audio>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
